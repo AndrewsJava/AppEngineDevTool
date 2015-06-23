@@ -1,28 +1,43 @@
 package harlequinmettle.developertool.view;
 
+import harlequinmettle.developertool.model.PathButtonData;
 import harlequinmettle.utils.guitools.JButtonWithEnterKeyAction;
 import harlequinmettle.utils.guitools.PreferredJScrollPane;
 import harlequinmettle.utils.guitools.VerticalJPanel;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 //Jun 20, 2015  11:18:18 AM 
 public class DevToolView {
-	JFrame UI = new JFrame();
-	private String appcfgPathButtonTitle;
-	private String appcfgPathButtonTooltip = "";
-	private ActionListener appcfgPathDefineAction;
-	JTabbedPane tabs = new JTabbedPane();
-	JButtonWithEnterKeyAction appEngineDeployScriptPathFinderButton;
 
-	public void setAppcfgButtonNameActionListenerAndToolTip(String name, ActionListener action, String tooltip) {
-		appcfgPathButtonTitle = name;
-		appcfgPathDefineAction = action;
-		appcfgPathButtonTooltip = tooltip;
+	JFrame UI = new JFrame();
+
+	JTabbedPane tabs = new JTabbedPane();
+	ArrayList<PathButton> pathButtons = new ArrayList<PathButton>();
+	ArrayList<JCheckBox> multipeDeployments = new ArrayList<JCheckBox>();
+
+	JButtonWithEnterKeyAction deployGAEProjectButton = new JButtonWithEnterKeyAction("deploy");
+
+	public void addPathButtonFromData(PathButtonData dataForButton) {
+		pathButtons.add(new PathButton(dataForButton));
+		if (dataForButton.actionIndicator == PathButtonData.ADD_APPLICATION_IDS_BUTTON_ID)
+			buildCheckboxesForEachAppID(dataForButton);
+	}
+
+	private void buildCheckboxesForEachAppID(PathButtonData dataForButton) {
+		// Jun 23, 2015 12:26:40 PM
+		multipeDeployments.clear();
+		if (dataForButton.actionIndicator == PathButtonData.ADD_APPLICATION_IDS_BUTTON_ID)
+			for (String id : dataForButton.path.split(" ")) {
+				multipeDeployments.add(new JCheckBox(id));
+			}
 	}
 
 	public void showUI() {
@@ -42,20 +57,29 @@ public class DevToolView {
 
 	// Jun 22, 2015 10:29:32 AM
 	protected void buildUITabs() {
-
+		deployGAEProjectButton.addActionListener(deployAction);
 		buildAddDataSettingsTab();
+		buildAddActionsTab();
+	}
+
+	// Jun 23, 2015 12:19:48 PM
+	private void buildAddActionsTab() {
+
+		VerticalJPanel acitonsTabContents = new VerticalJPanel();
+		for (JCheckBox app : multipeDeployments)
+			acitonsTabContents.add(app);
+		acitonsTabContents.add(deployGAEProjectButton);
+		PreferredJScrollPane actionsTabScroller = new PreferredJScrollPane(acitonsTabContents);
+
+		tabs.add("Actions", actionsTabScroller);
 	}
 
 	// Jun 22, 2015 10:43:27 AM
 	private void buildAddDataSettingsTab() {
-		if (appcfgPathButtonTitle == null || appcfgPathDefineAction == null)
-			return;
+
 		VerticalJPanel variablesTabContents = new VerticalJPanel();
-		appEngineDeployScriptPathFinderButton = new JButtonWithEnterKeyAction(appcfgPathButtonTitle);
-		// "set path to app engine deployment shell script: appcfg.sh"
-		appEngineDeployScriptPathFinderButton.setToolTipText(appcfgPathButtonTooltip);
-		appEngineDeployScriptPathFinderButton.addActionListener(appcfgPathDefineAction);
-		variablesTabContents.add(appEngineDeployScriptPathFinderButton);
+		for (PathButton pathbutton : pathButtons)
+			variablesTabContents.add(pathbutton);
 		PreferredJScrollPane variablesTabScroller = new PreferredJScrollPane(variablesTabContents);
 
 		tabs.add("Variables", variablesTabScroller);
@@ -79,11 +103,14 @@ public class DevToolView {
 		});
 	}
 
-	// Jun 22, 2015 11:36:07 AM
-	public void setAppcfgButtonName(String name) {
-		appEngineDeployScriptPathFinderButton.setText(name);
-
-	}
+	public ActionListener deployAction = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			for (JCheckBox app : multipeDeployments)
+				if (app.isSelected())
+					new GAEProjectDeployer().deployGAEProject(app.getText());
+		}
+	};
 
 	// Jun 22, 2015 11:36:48 AM
 	public void refreshUI() {

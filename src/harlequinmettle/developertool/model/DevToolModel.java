@@ -1,11 +1,22 @@
 package harlequinmettle.developertool.model;
 
-import harlequinmettle.utils.filetools.SerializationTool;
-
 import java.io.Serializable;
 
 //Jun 20, 2015  11:21:26 AM 
 public class DevToolModel implements Serializable {
+
+	// Jun 23, 2015 10:52:34 AM
+	@Override
+	public String toString() {
+		return "" + appcfg + gaewar + addids;
+
+	}
+
+	public DevToolModel() {
+		appcfg = new PathButtonData(PathButtonData.APPCFG_BUTTON_ID);
+		gaewar = new PathButtonData(PathButtonData.GAEWAR_BUTTON_ID);
+		addids = new PathButtonData(PathButtonData.ADD_APPLICATION_IDS_BUTTON_ID);
+	}
 
 	public String UITitle = "Developer Tool";
 
@@ -13,16 +24,8 @@ public class DevToolModel implements Serializable {
 
 	public final int HEIGHT = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height;
 
-	public PathButtonData appcfg = new PathButtonData();
-
-	private static final String modelSerializationPath = ".devtoolmodel";
-
-	public void saveModelState() {
-		SerializationTool.serializeObject(this, modelSerializationPath);
-	}
-
-	public static DevToolModel getSavedModelState() {
-		return SerializationTool.deserializeObject(DevToolModel.class, modelSerializationPath);
-	}
+	public PathButtonData appcfg;
+	public PathButtonData gaewar;
+	public PathButtonData addids;
 
 }
