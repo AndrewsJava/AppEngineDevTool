@@ -18,12 +18,16 @@ import javax.swing.SwingUtilities;
 public class DevToolView {
 
 	JFrame UI = new JFrame();
-
+	public PreferredJScrollPane projectsTab;
 	JTabbedPane tabs = new JTabbedPane();
 	ArrayList<PathButton> pathButtons = new ArrayList<PathButton>();
 	ArrayList<JCheckBox> multipeDeployments = new ArrayList<JCheckBox>();
 
 	JButtonWithEnterKeyAction deployGAEProjectButton = new JButtonWithEnterKeyAction("deploy");
+
+	public DevToolView(PreferredJScrollPane buildProjectsTab) {
+		this.projectsTab = buildProjectsTab;
+	}
 
 	public void addPathButtonFromData(PathButtonData dataForButton) {
 		pathButtons.add(new PathButton(dataForButton));
@@ -57,13 +61,28 @@ public class DevToolView {
 
 	// Jun 22, 2015 10:29:32 AM
 	protected void buildUITabs() {
+		tabs.removeAll();
 		deployGAEProjectButton.addActionListener(deployAction);
+		tabs.add("Projects", projectsTab);
 		buildAddDataSettingsTab();
-		buildAddActionsTab();
+		buildAddDeployAppTab();
+		buildAddBackupFilesTab();
+		buildAddGitTab();
+	}
+
+	// Jun 23, 2015 1:21:06 PM
+	private void buildAddGitTab() {
+		// TODO: build git quick commit interface with index.xml commit message
+		// with date/time
+	}
+
+	// Jun 23, 2015 1:21:06 PM
+	private void buildAddBackupFilesTab() {
+		// TODO: use bakcup app to manage threading file copy and backup
 	}
 
 	// Jun 23, 2015 12:19:48 PM
-	private void buildAddActionsTab() {
+	private void buildAddDeployAppTab() {
 
 		VerticalJPanel acitonsTabContents = new VerticalJPanel();
 		for (JCheckBox app : multipeDeployments)
@@ -71,7 +90,7 @@ public class DevToolView {
 		acitonsTabContents.add(deployGAEProjectButton);
 		PreferredJScrollPane actionsTabScroller = new PreferredJScrollPane(acitonsTabContents);
 
-		tabs.add("Actions", actionsTabScroller);
+		tabs.add("Deploy App", actionsTabScroller);
 	}
 
 	// Jun 22, 2015 10:43:27 AM
