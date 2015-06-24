@@ -20,10 +20,6 @@ public class DevToolModel implements Serializable {
 
 	public String UITitle = "project is undefined";
 
-	public final int WIDTH = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width;
-
-	public final int HEIGHT = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height;
-
 	public PathButtonData appcfg;
 	public PathButtonData gaewar;
 	public PathButtonData addids;

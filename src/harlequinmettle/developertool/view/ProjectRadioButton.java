@@ -1,4 +1,6 @@
-package harlequinmettle.developertool;
+package harlequinmettle.developertool.view;
+
+import harlequinmettle.developertool.DevTool;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

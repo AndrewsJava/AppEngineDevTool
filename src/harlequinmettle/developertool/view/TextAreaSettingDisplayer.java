@@ -32,10 +32,6 @@ public class TextAreaSettingDisplayer {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
 				// Jun 23, 2015 11:06:17 AM
-				thisButton.buttonData.path = ((JTextArea) arg0.getSource()).getText();
-
-				thisButton.setText(thisButton.buttonData.buttonTitle + " " + thisButton.buttonData.path);
-				DevTool.getSingleton().saveModelState();
 
 			}
 
@@ -48,7 +44,13 @@ public class TextAreaSettingDisplayer {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				// Jun 23, 2015 11:06:17 AM
+				thisButton.buttonData.path = ((JTextArea) arg0.getSource()).getText();
 
+				thisButton.setText(thisButton.buttonData.buttonTitle + " " + thisButton.buttonData.path);
+				DevTool.getSingleton().saveModelState();
+
+				// DevTool.getSingleton().view.updateGaeDeploymentButtonsComponents();
+				DevTool.getSingleton().view.updateIDTabs();
 			}
 
 		};
