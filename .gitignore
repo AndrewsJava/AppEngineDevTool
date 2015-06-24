@@ -20,4 +20,5 @@ appengine-generated/
 hs_err_pid*
 
 .*~
+.*
 
