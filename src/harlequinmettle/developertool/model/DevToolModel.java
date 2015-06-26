@@ -1,6 +1,7 @@
 package harlequinmettle.developertool.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 //Jun 20, 2015  11:21:26 AM 
 public class DevToolModel implements Serializable {
@@ -11,6 +12,8 @@ public class DevToolModel implements Serializable {
 		return "" + UITitle + "\n" + appcfg + gaewar + addids;
 
 	}
+
+	public HashMap<String, Boolean> savedDeployPreferences = new HashMap<String, Boolean>();
 
 	public DevToolModel() {
 		appcfg = new PathButtonData(PathButtonData.APPCFG_BUTTON_ID);

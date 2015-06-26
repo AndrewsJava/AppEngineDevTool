@@ -1,4 +1,4 @@
-package harlequinmettle.developertool.view;
+package harlequinmettle.developertool.view.components;
 
 import harlequinmettle.utils.guitools.PreferredJScrollPane;
 import harlequinmettle.utils.guitools.VerticalJPanel;
@@ -10,8 +10,8 @@ public class VertialScrollingTab {
 	}
 
 	String title = "";
-	VerticalJPanel contents = new VerticalJPanel();
-	PreferredJScrollPane scroller = new PreferredJScrollPane(contents);
+	public VerticalJPanel contents = new VerticalJPanel();
+	public PreferredJScrollPane scroller = new PreferredJScrollPane(contents);
 
 	public void revalidateRepaint() {
 

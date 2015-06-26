@@ -1,7 +1,8 @@
-package harlequinmettle.developertool.view;
+package harlequinmettle.developertool.view.components;
 
 import harlequinmettle.developertool.DevTool;
 import harlequinmettle.developertool.model.PathButtonData;
+import harlequinmettle.developertool.view.TextAreaSettingDisplayer;
 import harlequinmettle.utils.filetools.ChooseFilePrompter;
 import harlequinmettle.utils.guitools.JButtonWithEnterKeyAction;
 
@@ -12,7 +13,7 @@ import javax.swing.SwingConstants;
 
 //Jun 23, 2015  9:40:51 AM 
 public class PathButton extends JButtonWithEnterKeyAction {
-	PathButtonData buttonData;
+	public PathButtonData buttonData;
 	PathButton thisButton;
 
 	public PathButton(PathButtonData buttonData) {

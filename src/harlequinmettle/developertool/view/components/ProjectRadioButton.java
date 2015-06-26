@@ -1,4 +1,4 @@
-package harlequinmettle.developertool.view;
+package harlequinmettle.developertool.view.components;
 
 import harlequinmettle.developertool.DevTool;
 
@@ -19,8 +19,10 @@ public class ProjectRadioButton extends JRadioButton {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				DevTool.getSingleton().setCurrentModel(((ProjectRadioButton) arg0.getSource()).getText());
-
+				DevTool dev = DevTool.getSingleton();
+				String projectTitle = ((ProjectRadioButton) arg0.getSource()).getText();
+				dev.model.UITitle = projectTitle;
+				dev.setCurrentModel(projectTitle);
 			}
 		};
 

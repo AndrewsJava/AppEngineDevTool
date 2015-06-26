@@ -1,6 +1,7 @@
 package harlequinmettle.developertool.view;
 
 import harlequinmettle.developertool.DevTool;
+import harlequinmettle.developertool.view.components.PathButton;
 import harlequinmettle.utils.guitools.WindowDisplayer;
 
 import java.awt.event.KeyEvent;

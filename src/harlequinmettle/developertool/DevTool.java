@@ -45,7 +45,6 @@ public class DevTool {
 	}
 
 	public void saveModelState() {
-		System.out.println("saving state: " + model);
 		SerializationTool.serializeObject(model, modelSerializationPath + "_" + currentProjectTitle);
 	}
 
@@ -62,6 +61,7 @@ public class DevTool {
 	// Jun 23, 2015 2:37:25 PM
 	public void setCurrentModel(String projectName) {
 		currentProjectTitle = projectName;
+
 		projects.add(projectName);
 
 		SerializationTool.serializeObject(projects, modelSerializationPath);
@@ -76,7 +76,8 @@ public class DevTool {
 			model = new DevToolModel();
 		if (model == null)
 			model = new DevToolModel();
-		view.setTitle(model.UITitle);
+		model.UITitle = currentProjectTitle;
+		view.UI.setTitle(model.UITitle);
 		view.showUI();
 	}
 
