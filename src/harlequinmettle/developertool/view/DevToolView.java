@@ -6,7 +6,7 @@ import harlequinmettle.developertool.view.tabbuilders.GitTabBuilder;
 import harlequinmettle.developertool.view.tabbuilders.ProjectsTabBuilder;
 import harlequinmettle.developertool.view.tabbuilders.VariablesTabBuilder;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
 import javax.swing.JFrame;
@@ -26,11 +26,11 @@ public class DevToolView {
 	static final String gitTabTitle = "Git ";
 	static final String backupTabTitle = "Backup ";
 	static final String[] tabTitles = { projectsTabTitle, variablesTabTitle, deployTabTitle, gitTabTitle, backupTabTitle };
-	HashMap<String, VertialScrollingTab> tabTitleMap = new HashMap<String, VertialScrollingTab>();
+	LinkedHashMap<String, VertialScrollingTab> tabTitleMap = new LinkedHashMap<String, VertialScrollingTab>();
 
-	public final int WIDTH = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width;
+	public static final int WIDTH = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width;
 
-	public final int HEIGHT = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height;
+	public static final int HEIGHT = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height;
 
 	public DevToolView() {
 		for (String tabTitle : tabTitles) {
