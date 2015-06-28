@@ -28,7 +28,7 @@ public class PathButton extends JButtonWithEnterKeyAction {
 	public ActionListener action = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			if (buttonData.actionIndicator == PathButtonData.GAEWAR_BUTTON_ID)
+			if (buttonData.actionIndicator == PathButtonData.PROJECT_BUTTON_ID)
 				buttonData.path = ChooseFilePrompter.directoryPathChooser();
 			else if (buttonData.actionIndicator == PathButtonData.APPCFG_BUTTON_ID)
 				buttonData.path = ChooseFilePrompter.filePathChooser();

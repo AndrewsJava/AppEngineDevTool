@@ -9,7 +9,7 @@ public class DevToolModel implements Serializable {
 	// Jun 23, 2015 10:52:34 AM
 	@Override
 	public String toString() {
-		return "" + UITitle + "\n" + appcfg + gaewar + addids;
+		return "" + UITitle + "\n" + appcfg + project + addids;
 
 	}
 
@@ -17,14 +17,14 @@ public class DevToolModel implements Serializable {
 
 	public DevToolModel() {
 		appcfg = new PathButtonData(PathButtonData.APPCFG_BUTTON_ID);
-		gaewar = new PathButtonData(PathButtonData.GAEWAR_BUTTON_ID);
+		project = new PathButtonData(PathButtonData.PROJECT_BUTTON_ID);
 		addids = new PathButtonData(PathButtonData.ADD_APPLICATION_IDS_BUTTON_ID);
 	}
 
 	public String UITitle = "project is undefined";
 
 	public PathButtonData appcfg;
-	public PathButtonData gaewar;
+	public PathButtonData project;
 	public PathButtonData addids;
 
 }

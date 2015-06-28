@@ -1,8 +1,10 @@
 package harlequinmettle.developertool.view.tabbuilders;
 
 import harlequinmettle.developertool.DevTool;
+import harlequinmettle.developertool.model.DevToolModel;
 import harlequinmettle.developertool.view.components.VertialScrollingTab;
 import harlequinmettle.developertool.view.terminalactions.CommandLineExecutor;
+import harlequinmettle.utils.filetools.FileTools;
 import harlequinmettle.utils.guitools.JButtonWithEnterKeyAction;
 
 import java.awt.BorderLayout;
@@ -10,6 +12,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.io.File;
 import java.util.Date;
 
 import javax.swing.JPanel;
@@ -31,7 +36,8 @@ public class GitTabBuilder {
 		git.contents.add(sizeAdjusted);
 		JTextField commitMessage = new JTextField();
 		commitMessage.setFont(new Font("Arial", Font.PLAIN, fontSize));
-		commitMessage.setText("DevTool commit: " + new Date());
+		commitMessage.setText("DevTool: " + new Date());
+		commitMessage.addFocusListener(getTextTouchAddDateActionListener(commitMessage));
 		JTextArea output = new JTextArea();
 		addCommitButton.addActionListener(getAddCommitActionListener(output, commitMessage));
 		output.setFont(new Font("Arial", Font.PLAIN, fontSize));
@@ -42,6 +48,27 @@ public class GitTabBuilder {
 		commitPanel.add(addCommitButton);
 		sizeAdjusted.add(commitPanel, BorderLayout.NORTH);
 		sizeAdjusted.add(output, BorderLayout.CENTER);
+
+	}
+
+	// Jun 28, 2015 9:33:34 AM
+	private FocusListener getTextTouchAddDateActionListener(final JTextField commitMessage) {
+		return new FocusListener() {
+
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				// Jun 28, 2015 9:37:37 AM
+
+				commitMessage.setText("DevTool: " + new Date());
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				// Jun 28, 2015 9:37:37 AM
+
+			}
+
+		};
 
 	}
 
@@ -59,14 +86,33 @@ public class GitTabBuilder {
 				gitStatus += getOutputFromGitCommandExecutionForCurrentProject("commit -a -m \"" + commitMessage.getText() + "\"");
 				gitStatus += getGitStatus();
 				output.setText(gitStatus);
+				addUpdateToIndexHtml(commitMessage.getText());
 			}
 		};
 
 	}
 
+	// Jun 28, 2015 8:56:48 AM
+	protected void addUpdateToIndexHtml(String text) {
+
+		System.out.println("commit message adding to index.html: " + text);
+		DevToolModel model = DevTool.getSingleton().model;
+		String xmlfilepath = model.project.path + "war/index.html";
+		String fileContents = FileTools.tryToReadFileToString(new File(xmlfilepath), null);
+		System.out.println(" index.html: " + fileContents.length());
+		if (fileContents == null)
+			return;
+		String[] parts = fileContents.split("<commit-message>");
+		System.out.println(" index.html parts: " + parts.length);
+		if (parts.length < 2)
+			return;
+		String newFileContents = parts[0] + "<commit-message><br>\n\n" + text + parts[1];
+		FileTools.tryToWriteStringToFile(new File(xmlfilepath), newFileContents);
+	}
+
 	private String getOutputFromGitCommandExecutionForCurrentProject(String gitCommand) {
 
-		String projectDirectoryPath = DevTool.getSingleton().model.gaewar.path.replace("/war", "");
+		String projectDirectoryPath = DevTool.getSingleton().model.project.path;
 		System.out.println("project directory: " + projectDirectoryPath);
 		String gitStatusCommand = "git -C \"" + projectDirectoryPath + "\" ";
 		gitStatusCommand += gitCommand;
@@ -79,7 +125,7 @@ public class GitTabBuilder {
 	// Jun 26, 2015 12:33:52 PM
 	private String getGitStatus() {
 
-		String projectDirectoryPath = DevTool.getSingleton().model.gaewar.path.replace("/war", "");
+		String projectDirectoryPath = DevTool.getSingleton().model.project.path;
 		System.out.println("project directory: " + projectDirectoryPath);
 		String gitStatusCommand = "git -C \"" + projectDirectoryPath + "\" status";
 

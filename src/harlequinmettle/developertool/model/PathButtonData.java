@@ -15,7 +15,7 @@ public class PathButtonData implements Serializable {
 	// even for folder pathfinder
 	// odd for file pathfinder
 	public static final int APPCFG_BUTTON_ID = 1010101;
-	public static final int GAEWAR_BUTTON_ID = 2224442;
+	public static final int PROJECT_BUTTON_ID = 2224442;
 	public static final int ADD_APPLICATION_IDS_BUTTON_ID = 3673763;
 
 	public PathButtonData(String buttonTitle, String path, String tooltip) {
@@ -30,10 +30,10 @@ public class PathButtonData implements Serializable {
 			this.path = path_appcfg;
 			this.tooltip = tooltip_appcfg;
 		}
-		if (buttonID == GAEWAR_BUTTON_ID) {
-			this.buttonTitle = buttonTitle_gaewar;
-			this.path = path_gaewar;
-			this.tooltip = tooltip_gaewar;
+		if (buttonID == PROJECT_BUTTON_ID) {
+			this.buttonTitle = buttonTitle_project;
+			this.path = path_project;
+			this.tooltip = tooltip_project;
 		}
 		if (buttonID == ADD_APPLICATION_IDS_BUTTON_ID) {
 			this.buttonTitle = buttonTitle_addids;
@@ -55,11 +55,11 @@ public class PathButtonData implements Serializable {
 
 	public int actionIndicator;
 
-	private String buttonTitle_gaewar = "war folder location: ";
+	private String buttonTitle_project = "project folder location: ";
 
-	private String path_gaewar = "undefined";
+	private String path_project = "undefined";
 
-	private String tooltip_gaewar = "google app engine war folder location (typically next to src file in eclipse gae projects)";
+	private String tooltip_project = "project path (for gae apps should contain war folder and for git should countain .git)";
 
 	private String buttonTitle_appcfg = "appcfg.sh location: ";
 

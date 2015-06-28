@@ -30,7 +30,7 @@ public class VariablesTabBuilder {
 	public void updateGaeDeploymentButtonsComponents() {
 		variableSettingButtons.clear();
 		addPathButtonFromData(DevTool.getSingleton().model.appcfg);
-		addPathButtonFromData(DevTool.getSingleton().model.gaewar);
+		addPathButtonFromData(DevTool.getSingleton().model.project);
 		addPathButtonFromData(DevTool.getSingleton().model.addids);
 
 	}

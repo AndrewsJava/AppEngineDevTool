@@ -23,8 +23,8 @@ public class DevToolView {
 	static final String projectsTabTitle = "Projects";
 	static final String variablesTabTitle = "Variables";
 	static final String deployTabTitle = "Deploy App";
-	static final String gitTabTitle = "Git ";
-	static final String backupTabTitle = "Backup ";
+	static final String gitTabTitle = "Git";
+	static final String backupTabTitle = "Backup";
 	static final String[] tabTitles = { projectsTabTitle, variablesTabTitle, deployTabTitle, gitTabTitle, backupTabTitle };
 	LinkedHashMap<String, VertialScrollingTab> tabTitleMap = new LinkedHashMap<String, VertialScrollingTab>();
 

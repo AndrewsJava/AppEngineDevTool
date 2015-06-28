@@ -13,17 +13,17 @@ public class GAEProjectDeployer {
 	public void deployGAEProject(String id) {
 		setAppIdInXMLFile(id);
 		DevToolModel model = DevTool.getSingleton().model;
-		String warpath = model.gaewar.path;
+		String projectpath = model.project.path;
 		String appcfg = model.appcfg.path;
 
-		new CommandLineExecutor().executeCommandWithArguments(appcfg, "update", warpath);
+		new CommandLineExecutor().executeCommandWithArguments(appcfg, "update", projectpath);
 
 	}
 
 	// Jun 23, 2015 12:37:22 PM
 	private void setAppIdInXMLFile(String id) {
 		DevToolModel model = DevTool.getSingleton().model;
-		String xmlfilepath = model.gaewar.path + "/WEB-INF/appengine-web.xml";
+		String xmlfilepath = model.project.path + "/war/WEB-INF/appengine-web.xml";
 		String fileContents = FileTools.tryToReadFileToString(new File(xmlfilepath), null);
 		if (fileContents == null)
 			return;
