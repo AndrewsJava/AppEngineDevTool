@@ -1,7 +1,5 @@
 package harlequinmettle.developertool.view.backuputils;
 
-import java.util.Date;
-
 public class BackupUtilityThread extends Thread {
 
 	BackupDefinitionModel modelData;
@@ -22,17 +20,12 @@ public class BackupUtilityThread extends Thread {
 		for (int i = 0; i < modelData.iterations; i++) {
 			if (quit)
 				break;
-			// if (i == 0)
-			// modelData.clearDestinationDirectory();
-			System.out.println(new Date());
 			mapFiles();
-			System.out.println(new Date());
 
 			try {
 				System.out.println("interval for thread: " + modelData.interval);
 				Thread.sleep(modelData.interval * 1000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -50,8 +43,9 @@ public class BackupUtilityThread extends Thread {
 
 	}
 
+	// Jun 30, 2015 9:08:04 AM
 	public void clearOldBackups() {
-		// Jun 30, 2015 9:08:04 AM
+		modelData.clearDestinationDirectory();
 
 	}
 

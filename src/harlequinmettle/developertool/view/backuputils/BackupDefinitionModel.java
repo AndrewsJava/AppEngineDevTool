@@ -11,29 +11,18 @@ import org.apache.commons.io.FileUtils;
 
 public class BackupDefinitionModel implements Serializable {
 
-	TreeMap<String, Boolean> origins = new TreeMap<String, Boolean>();
-	TreeMap<String, Boolean> destinations = new TreeMap<String, Boolean>();
+	public TreeMap<String, Boolean> origins = new TreeMap<String, Boolean>();
+	public TreeMap<String, Boolean> destinations = new TreeMap<String, Boolean>();
 
 	TreeMap<String, Boolean> inclusions = new TreeMap<String, Boolean>();
 	TreeMap<String, Boolean> exclusions = new TreeMap<String, Boolean>();
 
 	String title = "untitled";
-	int interval = 0;
-	boolean autoRun = false;
-	boolean trackHistory = false;
-	boolean applyInclusions = false;
-	boolean applyExclusions = false;
+	public int interval = 0;
 	int iterations = 60000;
 
 	public BackupDefinitionModel() {
-		inclusions.put(".java", true);
-		// inclusions.put(".txt", true);
-		// inclusions.put(".xml", true);
-		// inclusions.put(".html", true);
-		// inclusions.put(".csv", true);
-		//
-		// exclusions.put(".jar", true);
-		// exclusions.put(".class", true);
+
 	}
 
 	public String[] getInclusionList() {

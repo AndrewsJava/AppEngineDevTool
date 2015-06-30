@@ -1,18 +1,21 @@
 package harlequinmettle.developertool.view;
 
 import harlequinmettle.developertool.DevTool;
+import harlequinmettle.developertool.view.backuputils.BackupDefinitionModel;
 import harlequinmettle.developertool.view.backuputils.BackupUtilityThread;
 import harlequinmettle.developertool.view.components.VertialScrollingTab;
 import harlequinmettle.utils.guitools.JButtonWithEnterKeyAction;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JCheckBox;
 
 //Jun 30, 2015  8:16:19 AM 
 public class BackupTabBuilder {
-	BackupUtilityThread backupThread = new BackupUtilityThread();
+	BackupDefinitionModel backupData = getDefaultBackupDataModel();
+	BackupUtilityThread backupThread = new BackupUtilityThread(backupData);
 
 	// Jun 30, 2015 8:16:27 AM
 	public void buildBackupTab(VertialScrollingTab backup) {
@@ -26,9 +29,21 @@ public class BackupTabBuilder {
 		}
 		checkbox.addActionListener(getBackupThreadRunningCheckboxActionListener());
 
-		JButtonWithEnterKeyAction deployGAEProjectButton = new JButtonWithEnterKeyAction("clear older backups");
-		deployGAEProjectButton.addActionListener(getClearOldBackupsButtonActionListener());
+		JButtonWithEnterKeyAction removeOldBackups = new JButtonWithEnterKeyAction("clear older backups");
+		removeOldBackups.addActionListener(getClearOldBackupsButtonActionListener());
 
+		backup.contents.add(checkbox);
+		backup.contents.add(removeOldBackups);
+	}
+
+	// Jun 30, 2015 11:45:03 AM
+	private BackupDefinitionModel getDefaultBackupDataModel() {
+		BackupDefinitionModel defaultModel = new BackupDefinitionModel();
+		defaultModel.interval = 8;// seconds
+		defaultModel.origins.put(DevTool.getSingleton().model.project.path, true);
+		defaultModel.destinations
+				.put(".backup_files_archives" + File.separatorChar + DevTool.getSingleton().model.UITitle.replaceAll(" ", "_"), true);
+		return defaultModel;
 	}
 
 	private ActionListener getClearOldBackupsButtonActionListener() {

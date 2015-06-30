@@ -17,6 +17,7 @@ public class FileBackerUpper {
 	String originsFilePath;
 	String destinationsFilePath;
 	private ArrayList<String> fileTypeFilter;
+	private ArrayList<String> fileTypeBackupExclusions;
 	TreeMap<String, Integer> counters = new TreeMap<String, Integer>();
 	String serializationKeyForCounters = ".serialized_counter_for_file_history_versioning";
 	private static final int startNumber = 1000000;
@@ -33,11 +34,11 @@ public class FileBackerUpper {
 		mirrorNodeFiles(originsFilePath);
 	}
 
-	public void mirrorNodeFiles(TreeMap<String, Boolean> includeOnly) {
-		fileTypeFilter = new ArrayList<String>();
-		for (Entry<String, Boolean> ent : includeOnly.entrySet()) {
+	public void mirrorNodeFiles(TreeMap<String, Boolean> exclusions) {
+		fileTypeBackupExclusions = new ArrayList<String>();
+		for (Entry<String, Boolean> ent : exclusions.entrySet()) {
 			if (ent.getValue())
-				fileTypeFilter.add(ent.getKey());
+				fileTypeBackupExclusions.add(ent.getKey());
 		}
 		mirrorNodeFiles(originsFilePath);
 	}
@@ -54,45 +55,45 @@ public class FileBackerUpper {
 			if (original.isDirectory()) {
 				mirrorNodeFiles(original.getAbsolutePath());
 			} else {
-				boolean shouldBackup = false;
-				if (fileTypeFilter != null) {
+				boolean skipBackup = false;
+				if (fileTypeBackupExclusions != null) {
 					String fileName = original.getName();
 
-					for (String fileEnding : fileTypeFilter) {
+					for (String fileEnding : fileTypeBackupExclusions) {
 						if (fileName.endsWith(fileEnding)) {
-							shouldBackup = true;
+							skipBackup = true;
 							break;
 						}
 					}
 				}
-				if (shouldBackup) {
 
-					File current = new File(original.getAbsolutePath().replaceAll(originsFilePath, destinationsFilePath));
+				if (skipBackup)
+					continue;
+				File current = new File(original.getAbsolutePath().replaceAll(originsFilePath, destinationsFilePath));
 
-					if (isChanged(original, current)) {
-						int iteration = startNumber;
-						if (counters.containsKey(original.getAbsolutePath())) {
-							System.out.println("INCREMENTING ITERATION NUMBER");
-							iteration = counters.get(original.getAbsolutePath());
-						}
-						iteration++;
-						counters.put(original.getAbsolutePath(), iteration);
-						String historyVersion = "" + iteration;
-						File newVersion = new File(original.getAbsolutePath().replaceAll(originsFilePath, destinationsFilePath) + "_"
-								+ (Long.MAX_VALUE - System.currentTimeMillis()) + "_" + historyVersion);
+				if (isChanged(original, current)) {
+					int iteration = startNumber;
+					if (counters.containsKey(original.getAbsolutePath())) {
+						System.out.println("INCREMENTING ITERATION NUMBER");
+						iteration = counters.get(original.getAbsolutePath());
+					}
+					iteration++;
+					counters.put(original.getAbsolutePath(), iteration);
+					String historyVersion = "" + iteration;
+					File newVersion = new File(original.getAbsolutePath().replaceAll(originsFilePath, destinationsFilePath) + "_"
+							+ (Long.MAX_VALUE - System.currentTimeMillis()) + "_" + historyVersion);
 
-						try {
-							FileUtils.copyFile(original, current);
-							FileUtils.copyFile(original, newVersion);
-							SerializationTool.serializeObject(counters, serializationKeyForCounters);
-							Thread.yield();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-
+					try {
+						FileUtils.copyFile(original, current);
+						FileUtils.copyFile(original, newVersion);
+						SerializationTool.serializeObject(counters, serializationKeyForCounters);
+						Thread.yield();
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
 
 				}
+
 			}
 		}
 	}
