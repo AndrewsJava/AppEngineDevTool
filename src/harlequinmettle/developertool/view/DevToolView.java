@@ -68,6 +68,7 @@ public class DevToolView {
 
 		new DeployTabBuilder().buildDeployTab(tabTitleMap.get(deployTabTitle));
 		new GitTabBuilder().buildGitTab(tabTitleMap.get(gitTabTitle));
+		new BackupTabBuilder().buildBackupTab(tabTitleMap.get(backupTabTitle));
 		for (Entry<String, VertialScrollingTab> ent : tabTitleMap.entrySet())
 			tabs.add(ent.getKey(), ent.getValue().scroller);
 	}
