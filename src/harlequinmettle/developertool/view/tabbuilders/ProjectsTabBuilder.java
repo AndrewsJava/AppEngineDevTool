@@ -60,6 +60,8 @@ public class ProjectsTabBuilder {
 
 				variablesTabContents.validate();
 				variablesTabContents.repaint();
+
+				DevTool.getSingleton().storeSelectedProjectTitleToMemory(projectAddName);
 			}
 		};
 

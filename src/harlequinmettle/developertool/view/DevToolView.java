@@ -1,6 +1,7 @@
 package harlequinmettle.developertool.view;
 
 import harlequinmettle.developertool.view.components.VertialScrollingTab;
+import harlequinmettle.developertool.view.tabbuilders.BackupTabBuilder;
 import harlequinmettle.developertool.view.tabbuilders.DeployTabBuilder;
 import harlequinmettle.developertool.view.tabbuilders.GitTabBuilder;
 import harlequinmettle.developertool.view.tabbuilders.ProjectsTabBuilder;

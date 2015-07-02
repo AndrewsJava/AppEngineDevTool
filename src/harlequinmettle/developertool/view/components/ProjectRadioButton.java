@@ -19,10 +19,12 @@ public class ProjectRadioButton extends JRadioButton {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				// getsource ischecked
 				DevTool dev = DevTool.getSingleton();
 				String projectTitle = ((ProjectRadioButton) arg0.getSource()).getText();
 				dev.model.UITitle = projectTitle;
 				dev.setCurrentModel(projectTitle);
+				DevTool.getSingleton().storeSelectedProjectTitleToMemory(projectTitle);
 			}
 		};
 

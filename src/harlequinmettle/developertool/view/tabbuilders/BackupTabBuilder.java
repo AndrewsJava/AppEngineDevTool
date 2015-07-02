@@ -1,4 +1,4 @@
-package harlequinmettle.developertool.view;
+package harlequinmettle.developertool.view.tabbuilders;
 
 import harlequinmettle.developertool.DevTool;
 import harlequinmettle.developertool.view.backuputils.BackupDefinitionModel;

@@ -15,10 +15,21 @@ public class DevTool {
 	private static DevTool singleton;
 	public DevToolModel model;
 	public DevToolView view;
-	public String currentProjectTitle = "undefined";
+	public String currentProjectTitle = getLastSelectedProjectTitleFromMemory();
 
 	public static DevTool getSingleton() {
 		return singleton;
+	}
+
+	// Jul 2, 2015 10:58:53 AM
+	private String getLastSelectedProjectTitleFromMemory() {
+		return SerializationTool.deserializeObject(String.class, modelSerializationPath + "_last_project");
+
+	}
+
+	public void storeSelectedProjectTitleToMemory(String projectSelected) {
+		SerializationTool.serializeObject(projectSelected, modelSerializationPath + "_last_project");
+
 	}
 
 	public DevTool() {
@@ -29,10 +40,15 @@ public class DevTool {
 	// Jun 20, 2015 11:16:58 AM
 	private void init() {
 		view = new DevToolView();
+		if (currentProjectTitle == null)
+			currentProjectTitle = "no project saved";
 		if (projects == null)
 			projects = new TreeSet<String>();
 		if (projects.size() > 0) {
-			setCurrentModel(projects.pollFirst());
+			if (projects.contains(currentProjectTitle))
+				setCurrentModel(currentProjectTitle);
+			else
+				setCurrentModel(projects.pollFirst());
 		} else {
 			updateModel();
 

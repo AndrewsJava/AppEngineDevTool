@@ -13,7 +13,7 @@ public class GAEProjectDeployer {
 	public void deployGAEProject(String id) {
 		setAppIdInXMLFile(id);
 		DevToolModel model = DevTool.getSingleton().model;
-		String projectpath = model.project.path;
+		String projectpath = model.project.path + File.separatorChar + "war";
 		String appcfg = model.appcfg.path;
 
 		new CommandLineExecutor().executeCommandWithArguments(appcfg, "update", projectpath);
