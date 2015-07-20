@@ -23,6 +23,18 @@ import javax.swing.JTextField;
 
 //Jun 26, 2015  12:23:56 PM 
 public class GitTabBuilder {
+	// per project
+	// git config credential.helper store
+	// git config --unset credential.helper
+	//
+	// all projects ie global
+	// git config --global credential.helper store
+	// git config --unset --global credential.helper
+	//
+	// .git-credentials in plain-text in your %HOME% directory or project
+	//
+	//
+	//
 
 	// Jun 26, 2015 12:24:04 PM
 	public void buildGitTab(VertialScrollingTab git) {
@@ -33,6 +45,7 @@ public class GitTabBuilder {
 		commitPanel.setLayout(new FlowLayout());
 		sizeAdjusted.setLayout(new BorderLayout());
 		JButtonWithEnterKeyAction addCommitButton = new JButtonWithEnterKeyAction("add/commit");
+		JButtonWithEnterKeyAction pushButton = new JButtonWithEnterKeyAction("push");
 		git.contents.add(sizeAdjusted);
 		JTextField commitMessage = new JTextField();
 		commitMessage.setFont(new Font("Arial", Font.PLAIN, fontSize));
@@ -40,14 +53,31 @@ public class GitTabBuilder {
 		commitMessage.addFocusListener(getTextTouchAddDateActionListener(commitMessage));
 		JTextArea output = new JTextArea();
 		addCommitButton.addActionListener(getAddCommitActionListener(output, commitMessage));
+		addCommitButton.addActionListener(getPushActionListener(output));
 		output.setFont(new Font("Arial", Font.PLAIN, fontSize));
 		String gitStatus = getGitStatus();
 		output.setText(gitStatus);
 
 		commitPanel.add(commitMessage);
 		commitPanel.add(addCommitButton);
+		commitPanel.add(pushButton);
 		sizeAdjusted.add(commitPanel, BorderLayout.NORTH);
 		sizeAdjusted.add(output, BorderLayout.CENTER);
+
+	}
+
+	// Jul 3, 2015 9:04:29 AM
+	private ActionListener getPushActionListener(final JTextArea output) {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				String gitStatus = getOutputFromGitCommandExecutionForCurrentProject("push");
+				gitStatus += "\n";
+				gitStatus += getGitStatus();
+				output.setText(gitStatus);
+			}
+		};
 
 	}
 
@@ -78,15 +108,11 @@ public class GitTabBuilder {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
-				// String gittest =
-				// "git -C \"/home/andrew/DEVELOPER/CODE/InvestmentAdviserEngine\" add --a";
-				// String gittest =
-				// "git -C \"/home/andrew/DEVELOPER/CODE/InvestmentAdviserEngine\" commit -a -m \"test commit\"";
+				addUpdateToIndexHtml(commitMessage.getText());
 				String gitStatus = getOutputFromGitCommandExecutionForCurrentProject("add --a");
 				gitStatus += getOutputFromGitCommandExecutionForCurrentProject("commit -a -m \"" + commitMessage.getText() + "\"");
 				gitStatus += getGitStatus();
 				output.setText(gitStatus);
-				addUpdateToIndexHtml(commitMessage.getText());
 			}
 		};
 
@@ -97,7 +123,7 @@ public class GitTabBuilder {
 
 		System.out.println("commit message adding to index.html: " + text);
 		DevToolModel model = DevTool.getSingleton().model;
-		String xmlfilepath = model.project.path + "war/index.html";
+		String xmlfilepath = model.project.path + File.separatorChar + "war/index.html";
 		String fileContents = FileTools.tryToReadFileToString(new File(xmlfilepath), null);
 		System.out.println(" index.html: " + fileContents.length());
 		if (fileContents == null)
@@ -106,7 +132,7 @@ public class GitTabBuilder {
 		System.out.println(" index.html parts: " + parts.length);
 		if (parts.length < 2)
 			return;
-		String newFileContents = parts[0] + "<commit-message><br>\n\n" + text + parts[1];
+		String newFileContents = parts[0] + "<commit-message><br>\n\n<h3>" + text + "</h3>" + parts[1];
 		FileTools.tryToWriteStringToFile(new File(xmlfilepath), newFileContents);
 	}
 

@@ -55,19 +55,7 @@ public class FileBackerUpper {
 			if (original.isDirectory()) {
 				mirrorNodeFiles(original.getAbsolutePath());
 			} else {
-				boolean skipBackup = false;
-				if (fileTypeBackupExclusions != null) {
-					String fileName = original.getName();
-
-					for (String fileEnding : fileTypeBackupExclusions) {
-						if (fileName.endsWith(fileEnding)) {
-							skipBackup = true;
-							break;
-						}
-					}
-				}
-
-				if (skipBackup)
+				if (isFileInExclusionsList(original))
 					continue;
 				File current = new File(original.getAbsolutePath().replaceAll(originsFilePath, destinationsFilePath));
 
@@ -96,6 +84,24 @@ public class FileBackerUpper {
 
 			}
 		}
+	}
+
+	// Jul 3, 2015 9:11:00 AM
+	private boolean isFileInExclusionsList(File original) {
+		boolean skipBackup = false;
+		if (fileTypeBackupExclusions != null) {
+			String fileName = original.getName();
+
+			for (String fileEnding : fileTypeBackupExclusions) {
+				if (fileName.endsWith(fileEnding)) {
+					skipBackup = true;
+					break;
+				}
+			}
+		}
+
+		return (skipBackup);
+
 	}
 
 	private String checkBackupIteration(String workingFile) {
