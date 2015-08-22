@@ -132,7 +132,7 @@ public class GitTabBuilder {
 		System.out.println(" index.html parts: " + parts.length);
 		if (parts.length < 2)
 			return;
-		String newFileContents = parts[0] + "<commit-message><br>\n\n<h3>" + text + "</h3>" + parts[1];
+		String newFileContents = parts[0] + "<commit-message><br>\n\n<h3> [" + new Date() + "]<br></h3>" + " \n<h3>" + text + "</h3>" + parts[1];
 		FileTools.tryToWriteStringToFile(new File(xmlfilepath), newFileContents);
 	}
 

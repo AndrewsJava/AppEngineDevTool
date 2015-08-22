@@ -1,6 +1,10 @@
 package harlequinmettle.developertool.view.terminalactions;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecuteResultHandler;
@@ -9,6 +13,17 @@ import org.apache.commons.exec.PumpStreamHandler;
 
 //Jun 26, 2015  10:58:05 AM 
 public class CommandLineExecutor {
+
+	public void doIt() {
+		try {
+			String scriptContent = "#!/bin/bash \n echo \"yeah toast!\" > /tmp/toast.txt";
+			Writer output = new BufferedWriter(new FileWriter("/tmp/toast.sh"));
+			output.write(scriptContent);
+			output.close();
+			Runtime.getRuntime().exec("chmod u+x /tmp/toast.sh");
+		} catch (IOException ex) {
+		}
+	}
 
 	public void executeCommandWithArguments(ComandLineStatement... commands) {
 		DefaultExecutor executor = new DefaultExecutor();

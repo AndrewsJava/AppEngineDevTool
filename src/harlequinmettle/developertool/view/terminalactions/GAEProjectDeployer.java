@@ -15,21 +15,29 @@ public class GAEProjectDeployer {
 		DevToolModel model = DevTool.getSingleton().model;
 		String projectpath = model.project.path + File.separatorChar + "war";
 		String appcfg = model.appcfg.path;
-
-		new CommandLineExecutor().executeCommandWithArguments(appcfg, "update", projectpath);
+		String backendname = "bonebackend";
+		new CommandLineExecutor().executeCommandWithArguments(appcfg, "update",
+				projectpath);
+		//appcfg backends <dir> update backend_name
+		new CommandLineExecutor().executeCommandWithArguments(appcfg,
+				"backends", projectpath, "update", backendname);
 
 	}
 
 	// Jun 23, 2015 12:37:22 PM
 	private void setAppIdInXMLFile(String id) {
 		DevToolModel model = DevTool.getSingleton().model;
-		String xmlfilepath = model.project.path + "/war/WEB-INF/appengine-web.xml";
-		String fileContents = FileTools.tryToReadFileToString(new File(xmlfilepath), null);
+		String xmlfilepath = model.project.path
+				+ "/war/WEB-INF/appengine-web.xml";
+		String fileContents = FileTools.tryToReadFileToString(new File(
+				xmlfilepath), null);
 		if (fileContents == null)
 			return;
 		String[] parts = fileContents.split("<application>.+?</application>");
-		String newFileContents = parts[0] + "<application>" + id.trim() + "</application>" + parts[1];
-		FileTools.tryToWriteStringToFile(new File(xmlfilepath), newFileContents);
+		String newFileContents = parts[0] + "<application>" + id.trim()
+				+ "</application>" + parts[1];
+		FileTools
+				.tryToWriteStringToFile(new File(xmlfilepath), newFileContents);
 	}
 
 }

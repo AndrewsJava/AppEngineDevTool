@@ -14,4 +14,5 @@ public class ComandLineStatement {
 	public void addArgument(String arg) {
 		commandArguments.add(arg);
 	}
+
 }
