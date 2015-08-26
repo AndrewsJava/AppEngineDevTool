@@ -2,15 +2,20 @@ package harlequinmettle.developertool;
 
 import harlequinmettle.developertool.model.DevToolModel;
 import harlequinmettle.developertool.view.DevToolView;
+import harlequinmettle.utils.filetools.FileTools;
 import harlequinmettle.utils.filetools.SerializationTool;
 
-import java.util.TreeSet;
+import java.io.File;
+import java.util.ArrayList;
 
 //Jun 20, 2015  11:15:37 AM 
 public class DevTool {
 
 	private static final String modelSerializationPath = ".devtoolmodel";
-	public TreeSet<String> projects = SerializationTool.deserializeObject(TreeSet.class, modelSerializationPath);
+	// public TreeSet<String> projects =
+	// SerializationTool.deserializeObject(TreeSet.class,
+	// modelSerializationPath);
+	public ArrayList<String> projects = new ArrayList<String>(FileTools.tryToReadFileToCollection(new File(modelSerializationPath)));
 
 	private static DevTool singleton;
 	public DevToolModel model;
@@ -23,12 +28,12 @@ public class DevTool {
 
 	// Jul 2, 2015 10:58:53 AM
 	private String getLastSelectedProjectTitleFromMemory() {
-		return SerializationTool.deserializeObject(String.class, modelSerializationPath + "_last_project");
+		return FileTools.tryToReadFileToString(new File(modelSerializationPath + "_last_project"), "");
 
 	}
 
 	public void storeSelectedProjectTitleToMemory(String projectSelected) {
-		SerializationTool.serializeObject(projectSelected, modelSerializationPath + "_last_project");
+		FileTools.tryToWriteStringToFile(new File(modelSerializationPath + "_last_project"), projectSelected);
 
 	}
 
@@ -43,12 +48,12 @@ public class DevTool {
 		if (currentProjectTitle == null)
 			currentProjectTitle = "no project saved";
 		if (projects == null)
-			projects = new TreeSet<String>();
+			projects = new ArrayList<String>();
 		if (projects.size() > 0) {
 			if (projects.contains(currentProjectTitle))
 				setCurrentModel(currentProjectTitle);
 			else
-				setCurrentModel(projects.pollFirst());
+				setCurrentModel(projects.get(0));
 		} else {
 			updateModel();
 
@@ -79,8 +84,7 @@ public class DevTool {
 		currentProjectTitle = projectName;
 
 		projects.add(projectName);
-
-		SerializationTool.serializeObject(projects, modelSerializationPath);
+		FileTools.tryToWriteCollectionToFileLines(new File(modelSerializationPath), projects);
 
 		updateModel();
 	}
