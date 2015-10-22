@@ -53,7 +53,7 @@ public class GitTabBuilder {
 		commitMessage.addFocusListener(getTextTouchAddDateActionListener(commitMessage));
 		JTextArea output = new JTextArea();
 		addCommitButton.addActionListener(getAddCommitActionListener(output, commitMessage));
-		addCommitButton.addActionListener(getPushActionListener(output));
+		pushButton.addActionListener(getPushActionListener(output));
 		output.setFont(new Font("Arial", Font.PLAIN, fontSize));
 		String gitStatus = getGitStatus();
 		output.setText(gitStatus);
@@ -72,7 +72,7 @@ public class GitTabBuilder {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
-				String gitStatus = getOutputFromGitCommandExecutionForCurrentProject("push");
+				String gitStatus = getOutputFromGitCommandExecutionForCurrentProject("push origin master");
 				gitStatus += "\n";
 				gitStatus += getGitStatus();
 				output.setText(gitStatus);
