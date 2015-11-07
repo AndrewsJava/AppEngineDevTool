@@ -41,9 +41,28 @@ public class BackupTabBuilder {
 			checkbox.setSelected(true);
 			startGitBackupThread();
 		}
-		checkbox.addActionListener(getBackupThreadRunningCheckboxActionListener());
+		checkbox.addActionListener(getGitBackupThreadRunningCheckboxActionListener());
 
 		backup.contents.add(checkbox);
+
+	}
+
+	private ActionListener getGitBackupThreadRunningCheckboxActionListener() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JCheckBox checkbox = (JCheckBox) arg0.getSource();
+				boolean isChecked = checkbox.isSelected();
+				String appId = checkbox.getActionCommand();
+				DevTool.getSingleton().model.savedDeployPreferences.put(appId, isChecked);
+				DevTool.getSingleton().saveModelState();
+				if (isChecked) {
+					startGitBackupThread();
+				} else {
+					stopRequested.set(true);
+				}
+			}
+		};
 
 	}
 
