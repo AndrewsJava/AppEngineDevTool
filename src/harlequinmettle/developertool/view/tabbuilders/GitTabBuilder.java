@@ -124,8 +124,9 @@ public class GitTabBuilder {
 		System.out.println("commit message adding to index.html: " + text);
 		DevToolModel model = DevTool.getSingleton().model;
 		String xmlfilepath = model.project.path + File.separatorChar + "war/index.html";
+
 		String fileContents = FileTools.tryToReadFileToString(new File(xmlfilepath), null);
-		System.out.println(" index.html: " + fileContents.length());
+		// System.out.println(" index.html: " + fileContents.length());
 		if (fileContents == null)
 			return;
 		String[] parts = fileContents.split("<commit-message>");
@@ -136,7 +137,7 @@ public class GitTabBuilder {
 		FileTools.tryToWriteStringToFile(new File(xmlfilepath), newFileContents);
 	}
 
-	private String getOutputFromGitCommandExecutionForCurrentProject(String gitCommand) {
+	public static String getOutputFromGitCommandExecutionForCurrentProject(String gitCommand) {
 
 		String projectDirectoryPath = DevTool.getSingleton().model.project.path;
 		System.out.println("project directory: " + projectDirectoryPath);
