@@ -39,6 +39,12 @@ public class GitTabBuilder {
 	// Jun 26, 2015 12:24:04 PM
 	public void buildGitTab(VertialScrollingTab git) {
 		int fontSize = 15;
+		int fontSize = 15;
+		int fontSize = 15;
+		int fontSize = 15;
+		int fontSize = 15;
+		int fontSize = 15;
+		int fontSize = 15;
 		git.contents.removeAll();
 		JPanel sizeAdjusted = new JPanel();
 		JPanel commitPanel = new JPanel();
